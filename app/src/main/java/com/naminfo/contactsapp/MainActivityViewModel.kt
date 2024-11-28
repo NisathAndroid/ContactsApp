@@ -1,27 +1,20 @@
 package com.naminfo.contactsapp
 
 import android.util.Log
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.naminfo.contactsapp.repository.ContactRepository
 import com.naminfo.contactsapp.repository.ContactsApi
 import com.naminfo.contactsapp.roomdatabase.AppDatabase
-import com.naminfo.contactsapp.roomdatabase.ContactEntity
 import com.naminfo.contactsapp.states.AddContactState
-import com.naminfo.contactsapp.states.ConstantsMessage
 import com.naminfo.contactsapp.states.ContactStates
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.awaitResponse
 import javax.inject.Inject
 
 private const val TAG = "==>>MainActivityViewModel"
@@ -202,6 +195,10 @@ class MainActivityViewModel @Inject constructor(
         }
         //  addPhoneCountry = "+91$phone"
         return phone
+    }
+
+    fun deleteContacts(id: Int) {
+       repo.deleteContacts(id)
     }
 
 

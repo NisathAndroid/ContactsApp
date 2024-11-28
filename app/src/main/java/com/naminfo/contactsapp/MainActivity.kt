@@ -3,9 +3,6 @@ package com.naminfo.contactsapp
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -15,15 +12,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.isDigitsOnly
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.naminfo.contactsapp.databinding.ActivityMainBinding
 import com.naminfo.contactsapp.databinding.DialogAddcontactsBinding
 import com.naminfo.contactsapp.states.AddContactState
-import com.naminfo.contactsapp.states.ConstantsMessage.CONTACT_NUMBER_VALID
 import com.naminfo.contactsapp.states.ConstantsMessage.ERROR_EMAIL
 import com.naminfo.contactsapp.states.ConstantsMessage.ERROR_NAME
 import com.naminfo.contactsapp.states.ConstantsMessage.ERROR_PHONE
@@ -34,7 +27,6 @@ import com.naminfo.contactsapp.util.PickContactContract
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
 import javax.inject.Inject
 
 private const val TAG = "==>>MainActivity"
@@ -177,8 +169,17 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         // Initialize recyclerView
         contactAdapter = ContactListAdapter(contactList) { contacts: Contacts, i: Int ->
-            Log.d(TAG, "setupRecyclerView: ")
-
+            Log.d(TAG, "setupRecyclerView: ${contacts.id}")
+            network.isNetworkConnected { isConnected ->
+                Log.d(TAG, "setupRecyclerView: $isConnected")
+                lifecycleScope.launch {
+                    if (isConnected as Boolean) {
+                        viewModel.deleteContacts(contacts.id)
+                    }else{
+                        Toast.makeText(this@MainActivity, NETWORK_FAILED, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
         binding.recyclerContactListRV.adapter = contactAdapter
         binding.apply {
@@ -201,9 +202,20 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     addContactNameTIE.addTextChangedListener(object : TextWatcher {
-                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                        override fun beforeTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            count: Int,
+                            after: Int
+                        ) {
+                        }
 
-                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        override fun onTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            before: Int,
+                            count: Int
+                        ) {
                             if (s.toString() == addContactNumberTIE.text.toString()) {
                                 addContactNameTIE.text?.clear() // Clear if it matches the phone number
                             }
@@ -225,13 +237,17 @@ class MainActivity : AppCompatActivity() {
                                     emailId = addEmailTIE.text?.trim().toString()
 
                                     if (!viewModel.isUserNameValid(userName))
-                                        addDialogBinding.addContactNameContainerTIL.setError(ERROR_NAME)
+                                        addDialogBinding.addContactNameContainerTIL.setError(
+                                            ERROR_NAME
+                                        )
                                     if (!viewModel.isPhoneNumberValid(phoneNumber))
-                                        addDialogBinding.addContactNumberContainerTIL.setError(ERROR_PHONE)
+                                        addDialogBinding.addContactNumberContainerTIL.setError(
+                                            ERROR_PHONE
+                                        )
                                     if (!viewModel.isEmailValid(emailId)) {
                                         addDialogBinding.addEmailContainerTIL.setError(ERROR_EMAIL)
 
-                                    }else{
+                                    } else {
                                         viewModel.addContacts(
                                             username = userName,
                                             phone = phoneNumber,

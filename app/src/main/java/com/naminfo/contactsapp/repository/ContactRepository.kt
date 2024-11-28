@@ -8,14 +8,19 @@ import retrofit2.Call
 import javax.inject.Inject
 
 class ContactRepository @Inject constructor(
-   private val gson: Gson,
-   private val  context: Context,
-   private val  contactsApi: ContactsApi
+    private val gson: Gson,
+    private val context: Context,
+    private val contactsApi: ContactsApi
 ) {
-    suspend fun addContacts(contacts: ContactsAdd):Call<ContactsAdd> {
-      return  contactsApi.addContacts(contacts)
+    suspend fun addContacts(contacts: ContactsAdd): Call<ContactsAdd> {
+        return contactsApi.addContacts(contacts)
     }
+
     suspend fun getContacts(): Call<List<Contacts>> {
-       return contactsApi.getContacts()
+        return contactsApi.getContacts()
+    }
+
+    fun deleteContacts(id: Int) {
+        contactsApi.deleteContact(id.toString())
     }
 }

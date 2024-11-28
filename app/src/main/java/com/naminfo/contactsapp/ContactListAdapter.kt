@@ -34,7 +34,10 @@ class ContactListAdapter(private var listOfContacts: MutableList<Contacts>,priva
             binding.contactNameTV.text = contact.name
             binding.contactNumberTV.text = contact.phone
             binding.mailIdTV.text = contact.email
-            clickListener(contact,pos)
+            binding.deleteContactIMV.setOnClickListener {
+                clickListener(contact,pos)
+            }
+
         }
     }
 
