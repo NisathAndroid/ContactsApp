@@ -1,0 +1,34 @@
+<resources>
+
+    <style name="Widget.Theme.ILook.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="Widget.Theme.ILook.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+    <style name="CustomSearchBar" parent="TextAppearance.Material3.SearchBar">
+        <item name="android:layout_height">56dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="searchIcon">@color/colorPrimary</item>
+    </style>
+
+    <!-- Custom SearchView style -->
+    <style name="CustomSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:background">@drawable/searchview_background</item>
+        <item name="android:iconifiedByDefault">false</item>
+        <item name="android:queryBackground">@color/transparent</item>
+        <item name="android:queryHint">"Search View Content</item>
+    </style>
+    <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@drawable/custom_search_plate</item>
+    </style>
+    <style name="RoundedDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@drawable/rounded_dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+
+    </style>
+</resources>

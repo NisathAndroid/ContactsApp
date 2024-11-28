@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name" translatable="false">HearSight</string>
+    <string name="title_permissionfeature" translatable="false">PermissionFeature</string>
+    <string name="welcome_to_safe_life">Welcome to Safe Life</string>
+    <string name="hs_look_out">HearSight</string>
+    <!--    Permission-->
+    <string name="permission_granted" translatable="false">Granted</string>
+    <string name="permission_denied" translatable="false">Denied</string>
+    <string name="permission_required" translatable="false">Permission Required</string>
+    <string name="dialog_permission_title" translatable="false">Permission required</string>
+    <string name="dialog_permission_default_message" translatable="false">Default message</string>
+    <string name="dialog_permission_button_positive" translatable="false">OK</string>
+    <string name="no_connection">No internet connection! Cannot be translated!</string>
+    <!-- Strings related to login -->
+    <string name="invalid_username">Username must be >3 characters</string>
+    <string name="invalid_phonenumber">Phone number must be 10 digits</string>
+    <string name="valid_sucess">verified successfully</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_generate_otp">Generate OTP</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="login_text">Login</string>
+    <string name="enter_your_name">"     Enter your name"</string>
+    <string name="title_activity_login1">Login1Activity</string>
+    <string name="network_error">Internet required</string>
+    <string name="login_now">Login Now</string>
+    <string name="default_notification_channel_id">seeforme</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+
+</resources>

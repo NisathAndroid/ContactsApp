@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="colorPrimary">#8BC53F</color>
+    <color name="md_theme_onPrimaryContainer">#152700</color>
+    <color name="colorAccent">#FF000000</color>
+    <color name="green_light">#61AB00</color>
+    <color name="red">#FF0010</color>
+    <color name="hs_gray">#929497</color>
+</resources>

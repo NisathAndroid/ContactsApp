@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contactListLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="-2dp"
+    android:outlineAmbientShadowColor="@color/transparent"
+    android:outlineSpotShadowColor="@color/transparent"
+    card_view:cardBackgroundColor="@color/transparent"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="0dp"  >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/profile_IMV"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:theme="@style/ButtonTheme"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/baseline_account_circle_24"
+            android:contentDescription="Profile pic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/contactName_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:gravity="start"
+            android:text="ContactName"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:theme="@style/Base.Theme.ContactsApp"
+            android:fontFamily="@font/opensans_bold"
+            card_view:layout_constraintStart_toEndOf="@+id/profile_IMV"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/mail_id_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:text="email"
+            android:textAppearance="@font/opensans_bold"
+            android:textColor="@color/red"
+            android:textSize="12sp"
+            android:theme="@style/Base.Theme.ContactsApp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.226" />
+
+        <TextView
+            android:id="@+id/contactNumber_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:gravity="start"
+            android:text="ContactNumber"
+
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:theme="@style/Base.Theme.ContactsApp"
+            android:fontFamily="@font/opensans_regular"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/profile_IMV"
+            card_view:layout_constraintTop_toBottomOf="@+id/contactName_TV"
+            card_view:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/deleteContact_IMV"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:padding="4dp"
+            android:src="@drawable/baseline_delete_24"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:theme="@style/ButtonTheme"
+            android:textStyle="bold"
+            card_view:layout_constraintBottom_toBottomOf="@+id/contactNumber_TV"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/contactName_TV"
+            card_view:layout_constraintVertical_bias="0.0" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.5"
+            android:background="@color/hs_gray"
+            android:visibility="visible"
+            android:theme="@style/ButtonTheme"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
