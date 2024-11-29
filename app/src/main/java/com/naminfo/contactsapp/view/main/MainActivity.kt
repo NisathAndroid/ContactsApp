@@ -224,13 +224,13 @@ class MainActivity : AppCompatActivity() {
                 val addDialog = Dialog(this@MainActivity, R.style.RoundedDialogTheme)
                 addDialogBinding = DialogAddcontactsBinding.inflate(layoutInflater)
                 addDialog.setContentView(addDialogBinding.root)
-                addDialogBinding.apply {
+
+              /*  addDialogBinding.apply {
                     addContactNameTIE.setOnFocusChangeListener { _, hasFocus ->
                         if (hasFocus && addContactNameTIE.text.toString() == addContactNumberTIE.text.toString()) {
                             addContactNameTIE.text?.clear() // Clear if it's auto-filled with the phone number
                         }
                     }
-
                     addContactNameTIE.addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(
                             s: CharSequence?,
@@ -253,8 +253,6 @@ class MainActivity : AppCompatActivity() {
 
                         override fun afterTextChanged(s: Editable?) {}
                     })
-                }
-                addDialogBinding.apply {
                     cancelBtn.setOnClickListener {
                         addDialog.dismiss()
                     }
@@ -306,7 +304,8 @@ class MainActivity : AppCompatActivity() {
                     pickBtn.setOnClickListener {
                         pickContactLauncher.launch(Intent())
                     }
-                }
+                }*/
+
                 addDialog.show()
             }
         }

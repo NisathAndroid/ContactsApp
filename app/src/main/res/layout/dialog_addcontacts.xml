@@ -38,7 +38,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             android:importantForAutofill="no"
-            android:autofillHints="none"
+            android:autofillHints="no"
             android:textColorHint="@color/colorPrimary"
             app:boxStrokeColor="@color/colorPrimary"
             app:boxStrokeErrorColor="@color/red"
@@ -51,7 +51,7 @@
                 android:layout_height="56dp"
                 android:hint="  Contact Number"
                 android:importantForAutofill="no"
-                android:autofillHints="none"
+                android:autofillHints="no"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:inputType="phone"
@@ -81,7 +81,8 @@
                 android:layout_height="56dp"
                 android:hint="  Contact Name"
                 android:importantForAutofill="no"
-                android:autofillHints="none"
+                android:autofillHints="no"
+                android:inputType="text"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:textSize="13sp" />
@@ -95,7 +96,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             android:importantForAutofill="no"
-            android:autofillHints="none"
+            android:autofillHints="no"
             android:textColorHint="@color/colorPrimary"
             app:boxStrokeColor="@color/colorPrimary"
             app:boxStrokeErrorColor="@color/red"
@@ -108,13 +109,11 @@
                 android:layout_height="56dp"
                 android:hint="  Email"
                 android:importantForAutofill="no"
-                android:autofillHints="none"
+                android:autofillHints="no"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:inputType="textEmailAddress"
                 android:textSize="13sp" />
-
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
