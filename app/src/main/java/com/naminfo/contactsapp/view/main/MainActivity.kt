@@ -1,4 +1,4 @@
-package com.naminfo.contactsapp
+package com.naminfo.contactsapp.view.main
 
 import android.app.Dialog
 import android.content.Intent
@@ -14,22 +14,21 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.naminfo.contactsapp.R
+import com.naminfo.contactsapp.TAG
 import com.naminfo.contactsapp.databinding.ActivityMainBinding
 import com.naminfo.contactsapp.databinding.DialogAddcontactsBinding
+import com.naminfo.contactsapp.model.Contacts
 import com.naminfo.contactsapp.states.AddContactState
-import com.naminfo.contactsapp.states.ConstantsMessage.ERROR_EMAIL
-import com.naminfo.contactsapp.states.ConstantsMessage.ERROR_NAME
-import com.naminfo.contactsapp.states.ConstantsMessage.ERROR_PHONE
-import com.naminfo.contactsapp.states.ConstantsMessage.NETWORK_FAILED
+import com.naminfo.contactsapp.states.ConstantsMessage
 import com.naminfo.contactsapp.states.ContactStates
 import com.naminfo.contactsapp.util.NetworkHelper
 import com.naminfo.contactsapp.util.PickContactContract
+import com.naminfo.contactsapp.view.adapter.ContactListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-private const val TAG = "==>>MainActivity"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -175,8 +174,12 @@ class MainActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     if (isConnected as Boolean) {
                         viewModel.deleteContacts(contacts.id)
-                    }else{
-                        Toast.makeText(this@MainActivity, NETWORK_FAILED, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(
+                            this@MainActivity,
+                            ConstantsMessage.NETWORK_FAILED,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -238,14 +241,16 @@ class MainActivity : AppCompatActivity() {
 
                                     if (!viewModel.isUserNameValid(userName))
                                         addDialogBinding.addContactNameContainerTIL.setError(
-                                            ERROR_NAME
+                                            ConstantsMessage.ERROR_NAME
                                         )
                                     if (!viewModel.isPhoneNumberValid(phoneNumber))
                                         addDialogBinding.addContactNumberContainerTIL.setError(
-                                            ERROR_PHONE
+                                            ConstantsMessage.ERROR_PHONE
                                         )
                                     if (!viewModel.isEmailValid(emailId)) {
-                                        addDialogBinding.addEmailContainerTIL.setError(ERROR_EMAIL)
+                                        addDialogBinding.addEmailContainerTIL.setError(
+                                            ConstantsMessage.ERROR_EMAIL
+                                        )
 
                                     } else {
                                         viewModel.addContacts(
@@ -262,7 +267,7 @@ class MainActivity : AppCompatActivity() {
                                 lifecycleScope.launch {
                                     Toast.makeText(
                                         this@MainActivity,
-                                        NETWORK_FAILED,
+                                        ConstantsMessage.NETWORK_FAILED,
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }

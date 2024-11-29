@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.naminfo.contactsapp.databinding.ItemContactlistBinding
+import com.naminfo.contactsapp.model.Contacts
 
 private const val TAG = "==>>ContactListAdapter"
-class ContactListAdapter(private var listOfContacts: MutableList<Contacts>,private var clickListener: (Contacts,Int) -> Unit) :
+class ContactListAdapter(private var listOfContacts: MutableList<Contacts>, private var clickListener: (Contacts, Int) -> Unit) :
     RecyclerView.Adapter<ContactListAdapter.ContactListViewHolder>() {
     lateinit var binding: ItemContactlistBinding
 
@@ -29,7 +30,7 @@ class ContactListAdapter(private var listOfContacts: MutableList<Contacts>,priva
 
     inner class ContactListViewHolder(binding: ViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(contact: Contacts,pos:Int) {
+        fun bind(contact: Contacts, pos:Int) {
             Log.d(TAG, "bind: contacts:$contact")
             binding.contactNameTV.text = contact.name
             binding.contactNumberTV.text = contact.phone

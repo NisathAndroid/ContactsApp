@@ -2,8 +2,8 @@ package com.naminfo.contactsapp.repository
 
 import android.content.Context
 import com.google.gson.Gson
-import com.naminfo.contactsapp.Contacts
-import com.naminfo.contactsapp.ContactsAdd
+import com.naminfo.contactsapp.model.data.Contacts
+import com.naminfo.contactsapp.model.data.ContactsAdd
 import retrofit2.Call
 import javax.inject.Inject
 

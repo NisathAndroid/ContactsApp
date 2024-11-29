@@ -1,4 +1,4 @@
-package com.naminfo.contactsapp
+package com.naminfo.contactsapp.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

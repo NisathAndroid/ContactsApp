@@ -1,6 +1,6 @@
 package com.naminfo.contactsapp.states
 
-import com.naminfo.contactsapp.Contacts
+import com.naminfo.contactsapp.model.data.Contacts
 
 sealed class ContactStates {
     data class Loading(var message:String) : ContactStates()

@@ -1,10 +1,13 @@
-package com.naminfo.contactsapp
+package com.naminfo.contactsapp.view.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naminfo.contactsapp.TAG
+import com.naminfo.contactsapp.model.Contacts
+import com.naminfo.contactsapp.model.ContactsAdd
 import com.naminfo.contactsapp.repository.ContactRepository
 import com.naminfo.contactsapp.repository.ContactsApi
 import com.naminfo.contactsapp.roomdatabase.AppDatabase
@@ -16,8 +19,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
-
-private const val TAG = "==>>MainActivityViewModel"
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
