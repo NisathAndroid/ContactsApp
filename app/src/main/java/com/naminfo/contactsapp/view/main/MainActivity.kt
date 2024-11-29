@@ -225,7 +225,7 @@ class MainActivity : AppCompatActivity() {
                 addDialogBinding = DialogAddcontactsBinding.inflate(layoutInflater)
                 addDialog.setContentView(addDialogBinding.root)
 
-              /*  addDialogBinding.apply {
+                addDialogBinding.apply {
                     addContactNameTIE.setOnFocusChangeListener { _, hasFocus ->
                         if (hasFocus && addContactNameTIE.text.toString() == addContactNumberTIE.text.toString()) {
                             addContactNameTIE.text?.clear() // Clear if it's auto-filled with the phone number
@@ -304,7 +304,7 @@ class MainActivity : AppCompatActivity() {
                     pickBtn.setOnClickListener {
                         pickContactLauncher.launch(Intent())
                     }
-                }*/
+                }
 
                 addDialog.show()
             }
