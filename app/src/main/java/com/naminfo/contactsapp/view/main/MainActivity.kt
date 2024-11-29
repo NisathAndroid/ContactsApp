@@ -12,6 +12,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.isDigitsOnly
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.naminfo.contactsapp.R
@@ -25,6 +28,8 @@ import com.naminfo.contactsapp.util.NetworkHelper
 import com.naminfo.contactsapp.util.PickContactContract
 import com.naminfo.contactsapp.util.snackMessage
 import com.naminfo.contactsapp.view.adapter.ContactListAdapter
+import com.naminfo.contactsapp.view.states.ConstantsMessage.ERROR_NAME
+import com.naminfo.contactsapp.view.states.ConstantsMessage.ERROR_PHONE
 import com.naminfo.contactsapp.view.states.ConstantsMessage.SUCCESS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -226,36 +231,59 @@ class MainActivity : AppCompatActivity() {
                 addDialog.setContentView(addDialogBinding.root)
 
                 addDialogBinding.apply {
-                    addContactNameTIE.setOnFocusChangeListener { _, hasFocus ->
-                        if (hasFocus && addContactNameTIE.text.toString() == addContactNumberTIE.text.toString()) {
-                            addContactNameTIE.text?.clear() // Clear if it's auto-filled with the phone number
-                        }
-                    }
-                    addContactNameTIE.addTextChangedListener(object : TextWatcher {
-                        override fun beforeTextChanged(
-                            s: CharSequence?,
-                            start: Int,
-                            count: Int,
-                            after: Int
-                        ) {
-                        }
-
-                        override fun onTextChanged(
-                            s: CharSequence?,
-                            start: Int,
-                            before: Int,
-                            count: Int
-                        ) {
-                            if (s.toString() == addContactNumberTIE.text.toString()) {
-                                addContactNameTIE.text?.clear() // Clear if it matches the phone number
+                    addContactNumberTIE.doAfterTextChanged {
+                        Log.d(TAG, "showAddContactDialog: ${it.toString()}")
+                        phoneNumber = addContactNumberTIE.text?.trim().toString()
+                        if (phoneNumber.length != 10) {
+                            if (phoneNumber.length == 13 && phoneNumber.startsWith("+91")) {
+                                phoneNumber = phoneNumber.replace("+91", "")
+                                addContactNumberContainerTIL.isErrorEnabled = false
+                                addContactNumberTIE.clearFocus()
+                            } else {
+                                addContactNumberContainerTIL.error = ERROR_PHONE
+                                // addDialogBinding.snackMessage(ERROR_PHONE)
+                                addContactNumberTIE.requestFocus()
+                            }
+                        } else {
+                            if (!phoneNumber.isDigitsOnly()) {
+                                addContactNumberContainerTIL.error = ERROR_PHONE
+                                //addDialogBinding.snackMessage(ERROR_PHONE)
+                                addContactNumberTIE.requestFocus()
+                            } else {
+                                addContactNumberContainerTIL.isErrorEnabled = false
+                                addContactNumberTIE.clearFocus()
                             }
                         }
+                    }
+                    addContactNameTIE.doAfterTextChanged {
+                        userName = addContactNameTIE.text?.trim().toString().lowercase()
+                        if (userName.length < 3) {
+                            addContactNameContainerTIL.error = ERROR_NAME
+                            addContactNameTIE.requestFocus()
+                        } else {
+                            addContactNameContainerTIL.isErrorEnabled = false
+                            addContactNameTIE.clearFocus()
+                        }
+                    }
 
-                        override fun afterTextChanged(s: Editable?) {}
-                    })
+                    addEmailTIE.doAfterTextChanged {
+                        emailId = addEmailTIE.text?.trim().toString().lowercase()
+                        if (!viewModel.isEmailValid(emailId)) {
+                            addEmailContainerTIL.error = ERROR_NAME
+                            addEmailTIE.requestFocus()
+                        } else {
+                            addEmailContainerTIL.isErrorEnabled = false
+                            addEmailTIE.clearFocus()
+                        }
+
+                    }
                     cancelBtn.setOnClickListener {
                         addDialog.dismiss()
                     }
+                    pickBtn.setOnClickListener {
+                        pickContactLauncher.launch(Intent())
+                    }
+
                     saveBtn.setOnClickListener {
                         network.isNetworkConnected { isConnected ->
                             if (isConnected as Boolean) {
@@ -263,29 +291,13 @@ class MainActivity : AppCompatActivity() {
                                     userName = addContactNameTIE.text?.trim().toString()
                                     phoneNumber = addContactNumberTIE.text?.trim().toString()
                                     emailId = addEmailTIE.text?.trim().toString()
-
-                                    if (!viewModel.isUserNameValid(userName))
-                                        addDialogBinding.addContactNameContainerTIL.setError(
-                                            ConstantsMessage.ERROR_NAME
-                                        )
-                                    if (!viewModel.isPhoneNumberValid(phoneNumber))
-                                        addDialogBinding.addContactNumberContainerTIL.setError(
-                                            ConstantsMessage.ERROR_PHONE
-                                        )
-                                    if (!viewModel.isEmailValid(emailId)) {
-                                        addDialogBinding.addEmailContainerTIL.setError(
-                                            ConstantsMessage.ERROR_EMAIL
-                                        )
-
-                                    } else {
-                                        viewModel.addContacts(
-                                            username = userName,
-                                            phone = phoneNumber,
-                                            email = emailId
-                                        )
-                                        {
-                                            addDialog.dismiss()
-                                        }
+                                    viewModel.addContacts(
+                                        username = userName,
+                                        phone = phoneNumber,
+                                        email = emailId
+                                    )
+                                    {
+                                        addDialog.dismiss()
                                     }
                                 }
                             } else {
@@ -300,9 +312,6 @@ class MainActivity : AppCompatActivity() {
 
                         }
 
-                    }
-                    pickBtn.setOnClickListener {
-                        pickContactLauncher.launch(Intent())
                     }
                 }
 
