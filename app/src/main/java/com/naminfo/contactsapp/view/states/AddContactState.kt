@@ -1,4 +1,4 @@
-package com.naminfo.contactsapp.states
+package com.naminfo.contactsapp.view.states
 
 import com.naminfo.contactsapp.model.data.ContactsAdd
 

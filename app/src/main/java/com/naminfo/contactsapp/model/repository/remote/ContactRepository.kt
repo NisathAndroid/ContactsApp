@@ -1,4 +1,4 @@
-package com.naminfo.contactsapp.repository
+package com.naminfo.contactsapp.model.repository.remote
 
 import android.content.Context
 import com.google.gson.Gson
@@ -20,7 +20,7 @@ class ContactRepository @Inject constructor(
         return contactsApi.getContacts()
     }
 
-    fun deleteContacts(id: Int) {
-        contactsApi.deleteContact(id.toString())
+    fun deleteContacts(id: String) : Call<Void> {
+        return contactsApi.deleteContact(id.toString())
     }
 }

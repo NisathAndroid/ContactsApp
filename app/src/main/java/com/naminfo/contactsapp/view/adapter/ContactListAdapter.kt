@@ -1,4 +1,4 @@
-package com.naminfo.contactsapp
+package com.naminfo.contactsapp.view.adapter
 
 
 import android.util.Log
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.naminfo.contactsapp.databinding.ItemContactlistBinding
-import com.naminfo.contactsapp.model.Contacts
+import com.naminfo.contactsapp.model.data.Contacts
 
 private const val TAG = "==>>ContactListAdapter"
 class ContactListAdapter(private var listOfContacts: MutableList<Contacts>, private var clickListener: (Contacts, Int) -> Unit) :

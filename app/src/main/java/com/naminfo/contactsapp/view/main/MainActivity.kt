@@ -15,20 +15,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.naminfo.contactsapp.R
-import com.naminfo.contactsapp.TAG
 import com.naminfo.contactsapp.databinding.ActivityMainBinding
 import com.naminfo.contactsapp.databinding.DialogAddcontactsBinding
-import com.naminfo.contactsapp.model.Contacts
-import com.naminfo.contactsapp.states.AddContactState
-import com.naminfo.contactsapp.states.ConstantsMessage
-import com.naminfo.contactsapp.states.ContactStates
+import com.naminfo.contactsapp.model.data.Contacts
+import com.naminfo.contactsapp.view.states.AddContactState
+import com.naminfo.contactsapp.view.states.ConstantsMessage
+import com.naminfo.contactsapp.view.states.ContactStates
 import com.naminfo.contactsapp.util.NetworkHelper
 import com.naminfo.contactsapp.util.PickContactContract
+import com.naminfo.contactsapp.util.snackMessage
 import com.naminfo.contactsapp.view.adapter.ContactListAdapter
+import com.naminfo.contactsapp.view.states.ConstantsMessage.SUCCESS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "==>>MainActivity"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -123,12 +126,13 @@ class MainActivity : AppCompatActivity() {
                     is AddContactState.Success -> {
                         progressAI.visibility = View.GONE
                         Log.d(TAG, "livedataObserver: Success")
+                        binding.snackMessage("Successfully added contact...")
+                        fetchContacts()
                     }
 
                     is AddContactState.Failure -> {
                         progressAI.visibility = View.GONE
-
-
+                        binding.snackMessage(it.message)
                         Log.d(TAG, "livedataObserver: Failure ${it.message}")
                     }
                 }
@@ -145,6 +149,7 @@ class MainActivity : AppCompatActivity() {
                         contactList.clear()
                         if (it.listOfContacts.isEmpty()) {
                             binding.emptyContactsIMV.visibility = View.VISIBLE
+                            binding.snackMessage("Contacts is empty...")
                         } else {
                             binding.emptyContactsIMV.visibility = View.GONE
                             contactList = it.listOfContacts.toMutableList()
@@ -155,7 +160,21 @@ class MainActivity : AppCompatActivity() {
 
                     is ContactStates.Failure -> {
                         Log.d(TAG, "livedataObserver: FAILURE....")
+
                         progressAI.visibility = View.GONE
+                    }
+
+                    is ContactStates.Messages -> {
+                        Log.d(TAG, "livedataObserver: FAILURE....")
+                        progressAI.visibility = View.GONE
+                        if (it.status == ConstantsMessage.EMPTY) {
+                            binding.emptyContactsIMV.visibility = View.VISIBLE
+                            Toast.makeText(
+                                this@MainActivity,
+                                it.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
 
@@ -173,7 +192,15 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "setupRecyclerView: $isConnected")
                 lifecycleScope.launch {
                     if (isConnected as Boolean) {
-                        viewModel.deleteContacts(contacts.id)
+                        viewModel.deleteContacts(contacts._id.toString()) { status, toast ->
+
+                            fetchContacts()
+                            Toast.makeText(
+                                this@MainActivity,
+                                toast,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     } else {
                         Toast.makeText(
                             this@MainActivity,

@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.naminfo.contactsapp.repository.ContactRepository
-import com.naminfo.contactsapp.repository.ContactsApi
-import com.naminfo.contactsapp.roomdatabase.AppDatabase
+import com.naminfo.contactsapp.model.repository.remote.ContactRepository
+import com.naminfo.contactsapp.model.repository.remote.ContactsApi
+import com.naminfo.contactsapp.model.repository.local.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,5 +54,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideContactsRepo(gson: Gson, @ApplicationContext context: Context,contactsApi: ContactsApi):ContactRepository = ContactRepository(gson,context,contactsApi)
+    fun provideContactsRepo(gson: Gson, @ApplicationContext context: Context,contactsApi: ContactsApi): ContactRepository = ContactRepository(gson,context,contactsApi)
 }

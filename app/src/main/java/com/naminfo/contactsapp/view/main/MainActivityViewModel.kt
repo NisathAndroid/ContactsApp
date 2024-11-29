@@ -5,21 +5,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naminfo.contactsapp.TAG
-import com.naminfo.contactsapp.model.Contacts
-import com.naminfo.contactsapp.model.ContactsAdd
-import com.naminfo.contactsapp.repository.ContactRepository
-import com.naminfo.contactsapp.repository.ContactsApi
-import com.naminfo.contactsapp.roomdatabase.AppDatabase
-import com.naminfo.contactsapp.states.AddContactState
-import com.naminfo.contactsapp.states.ContactStates
+
+import com.naminfo.contactsapp.model.data.Contacts
+import com.naminfo.contactsapp.model.data.ContactsAdd
+import com.naminfo.contactsapp.model.repository.remote.ContactRepository
+import com.naminfo.contactsapp.model.repository.remote.ContactsApi
+import com.naminfo.contactsapp.model.repository.local.AppDatabase
+import com.naminfo.contactsapp.view.states.AddContactState
+
+import com.naminfo.contactsapp.view.states.ConstantsMessage.CONTACT_DELETED_ERR_MSG
+import com.naminfo.contactsapp.view.states.ConstantsMessage.CONTACT_DELETED_MSG
+import com.naminfo.contactsapp.view.states.ConstantsMessage.EMPTY
+import com.naminfo.contactsapp.view.states.ConstantsMessage.FAILURE
+import com.naminfo.contactsapp.view.states.ConstantsMessage.SUCCESS
+import com.naminfo.contactsapp.view.states.ContactStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
-
+private const val TAG = "==>>MainActivityViewModel"
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     private val database: AppDatabase,
@@ -43,7 +49,12 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launch {
             val contactsLiveData = database.contactDao().getAllContacts()
             Log.d(TAG, "getContactFromRoom: offline mode")
-            _allContactsInfo.postValue(ContactStates.Success(contactsLiveData))
+            if (contactsLiveData.isEmpty()){
+                _allContactsInfo.postValue(ContactStates.Messages(EMPTY,"No contacts found"))
+            }else{
+                _allContactsInfo.postValue(ContactStates.Success(contactsLiveData))
+            }
+
         }
     }
 
@@ -66,11 +77,12 @@ class MainActivityViewModel @Inject constructor(
                     if (response.isSuccessful && (response.code() == 200 || response.code() == 201)) {
                         val contacts = response.body()
                         if (contacts.isNullOrEmpty()) {
-                            _allContactsInfo.postValue(ContactStates.Failure("No contacts found"))
+                            _allContactsInfo.postValue(ContactStates.Messages(EMPTY,"No contacts found"))
                         } else {
                             try {
                                 val entities = contacts.map {
                                     Contacts(
+                                        _id = it._id,
                                         name = it.name,
                                         phone = it.phone,
                                         email = it.email
@@ -79,13 +91,14 @@ class MainActivityViewModel @Inject constructor(
                                 viewModelScope.launch {
                                     database.contactDao().clearContacts()
                                     database.contactDao().insertAll(entities)
-
+                                    _allContactsInfo.postValue(ContactStates.Success(entities))
                                 }
-                                _allContactsInfo.postValue(ContactStates.Success(entities))
+
                             } catch (e: Exception) {
                                 viewModelScope.launch {
-                                    _contactsRoom.postValue(
-                                        database.contactDao().getAllContacts()
+                                    val entity =database.contactDao().getAllContacts()
+                                    _allContactsInfo.postValue(ContactStates.Success(entity)
+
                                     )
                                 }
                             }
@@ -198,8 +211,24 @@ class MainActivityViewModel @Inject constructor(
         return phone
     }
 
-    fun deleteContacts(id: Int) {
-       repo.deleteContacts(id)
+    fun deleteContacts(id: String,callback:( message:String,toast:String)->Unit) {
+       repo.deleteContacts(id).enqueue(object :Callback<Void>{
+           override fun onResponse(call: Call<Void>, response: Response<Void>) {
+               if (response.isSuccessful) {
+                   Log.d(TAG, "Contact deleted successfully!")
+                   callback(SUCCESS, CONTACT_DELETED_MSG)
+               } else {
+                   Log.e(TAG, "Failed to delete contact: ${response.code()}")
+                   callback(FAILURE, CONTACT_DELETED_ERR_MSG)
+               }
+           }
+
+           override fun onFailure(p0: Call<Void>, p1: Throwable) {
+               Log.e(TAG, "Error: ${p1.message}")
+               callback(FAILURE, CONTACT_DELETED_ERR_MSG)
+           }
+
+       })
     }
 
 

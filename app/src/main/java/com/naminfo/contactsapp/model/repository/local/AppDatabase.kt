@@ -1,4 +1,4 @@
-package com.naminfo.contactsapp.roomdatabase
+package com.naminfo.contactsapp.model.repository.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

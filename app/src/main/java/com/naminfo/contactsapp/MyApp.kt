@@ -1,8 +1,6 @@
 package com.naminfo.contactsapp
 
 import android.app.Application
-import androidx.room.Room
-import com.naminfo.contactsapp.roomdatabase.AppDatabase
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

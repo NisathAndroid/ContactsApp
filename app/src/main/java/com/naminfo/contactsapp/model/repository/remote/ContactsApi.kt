@@ -1,4 +1,4 @@
-package com.naminfo.contactsapp.repository
+package com.naminfo.contactsapp.model.repository.remote
 
 import com.naminfo.contactsapp.model.data.Contacts
 import com.naminfo.contactsapp.model.data.ContactsAdd
